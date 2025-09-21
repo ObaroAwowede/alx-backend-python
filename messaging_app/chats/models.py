@@ -12,20 +12,35 @@ class User(AbstractUser):
     role = models.CharField(
         max_length=20,
         choices=[
-            ('guest','Guest'),
-            ('host','Host'),
-            ('admin','Admin')
+            ('guest', 'Guest'),
+            ('host', 'Host'),
+            ('admin', 'Admin')
         ],
-        null= False
+        null=False
     )
     created_at = models.DateField(auto_now_add=True)
+    # I had to Override groups and user_permissions field
+    # to avoid reverse accessor clash
+    groups = models.ManyToManyField(
+        'auth.Group',
+        related_name='chats_user_groups',  
+        blank=True,
+        help_text='The groups this user belongs to.',
+        verbose_name='groups',
+    )
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        related_name='chats_user_permissions',  
+        blank=True,
+        help_text='Specific permissions for this user.',
+        verbose_name='user permissions',
+    )
     class Meta:
         indexes = [
             models.Index(fields=['email'])
         ]
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
-
 class Conversation(models.Model):
     conversation_id = models.UUIDField(primary_key=True,default=uuid.uuid4)
     participants_id = models.ManyToManyField(User, related_name='conversations')
@@ -48,7 +63,7 @@ class Message(models.Model):
 
     class Meta:
         indexes = [
-            models.Index(fields=['sender']),
+            models.Index(fields=['sender_id']),
             models.Index(fields=['conversation']),
             models.Index(fields=['sent_at'])
         ]

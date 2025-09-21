@@ -1,11 +1,11 @@
 from django.shortcuts import render
-from rest_framework import serializers, viewset, permissions, status, filters
+from rest_framework import serializers, viewsets, permissions, status, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .serializers import ConversationSerializer, MessageSerializer
 from .models import Conversation, Message
 
-class ConversationViewSet(viewset.ModelViewSet):
+class ConversationViewSet(viewsets.ModelViewSet):
     queryset= Conversation.objects.all()
     serializer_class = ConversationSerializer
     permission_classes = [permissions.IsAuthenticated]
