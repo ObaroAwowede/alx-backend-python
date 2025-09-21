@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import serializers, viewset, permissions, status
+from rest_framework import serializers, viewset, permissions, status, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .serializers import ConversationSerializer, MessageSerializer
