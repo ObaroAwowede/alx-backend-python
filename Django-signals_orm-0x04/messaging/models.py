@@ -18,7 +18,7 @@ class Message(models.Model):
         related_name="received_messages"
     )
     content = models.TextField(null=False)
-    time_stamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
     
 class Notification(models.Model):
     message = models.OneToOneField(
